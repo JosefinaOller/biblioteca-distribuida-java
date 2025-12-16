@@ -33,8 +33,8 @@ class LibroServiceTest {
     private Libro existingLibro;
     private final Long idExisted = 1L;
     private final Long idNotExisted = 99L;
-    private final String isbnExisted = "9781234567890";
-    private final String isbnNew = "9789876543210";
+    private final String isbnExisted = "978-1234-567-890";
+    private final String isbnNew = "978-9876-543-210";
 
     @BeforeEach
     void setUp() {
@@ -151,14 +151,14 @@ class LibroServiceTest {
     @Test
     @DisplayName("Update: Debe lanzar IsbnExistenteException si cambia a un ISBN ocupado")
     void updateLibro_DuplicateIsbn_ThrowsException() {
-        Libro libroUpdate = new Libro(idExisted, "Titulo", "Autor", "9999999999999", 1);
+        Libro libroUpdate = new Libro(idExisted, "Titulo", "Autor", "999-9999-999-999", 1);
 
         when(repository.findById(idExisted)).thenReturn(Optional.of(existingLibro));
-        when(repository.existsByIsbn("9999999999999")).thenReturn(true);
+        when(repository.existsByIsbn("999-9999-999-999")).thenReturn(true);
 
         assertThrows(IsbnExistenteException.class, () -> service.update(libroUpdate));
 
-        verify(repository, times(1)).existsByIsbn("9999999999999");
+        verify(repository, times(1)).existsByIsbn("999-9999-999-999");
         verify(repository, never()).save(any(Libro.class));
     }
 
