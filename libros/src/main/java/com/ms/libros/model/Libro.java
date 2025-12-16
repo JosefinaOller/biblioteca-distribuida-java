@@ -3,11 +3,11 @@ package com.ms.libros.model;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.Pattern;
 import jakarta.validation.constraints.Size;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.hibernate.validator.constraints.ISBN;
 
 @Data
 @NoArgsConstructor
@@ -29,8 +29,7 @@ public class Libro {
 
     @Column(unique = true, nullable = false)
     @NotBlank(message = "El ISBN no puede estar vacío.")
-    @Size(min = 13, max = 13, message = "El ISBN debe tener 13 dígitos.")
-    @Pattern(regexp = "^\\d+$", message = "El ISBN debe contener solo números.")
+    @Size(min = 10, max = 20, message = "El ISBN debe tener entre 10 y 20 caracteres.")
     private String isbn;
 
     @Min(value = 0, message = "El stock de ejemplares no puede ser negativo.")

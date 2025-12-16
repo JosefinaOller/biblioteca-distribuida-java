@@ -5,6 +5,6 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
 @Repository
-public interface ILibroRepository extends JpaRepository<Libro, Long> {
+public interface ILibroRepository extends JpaRepository<Libro,  Long> {
     boolean existsByIsbn(String isbn);
 }
