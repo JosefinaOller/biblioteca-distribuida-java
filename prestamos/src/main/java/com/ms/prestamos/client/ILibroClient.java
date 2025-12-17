@@ -7,7 +7,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 
-@FeignClient(name = "ms-libros")
+@FeignClient(name = "ms-libros", url = "${libros.api.url:}")
 public interface ILibroClient {
 
     @GetMapping("/api/libros/{id}")
