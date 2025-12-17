@@ -27,7 +27,7 @@ public class UsuarioService implements IUsuarioService {
             log.warn("El email ya existe, no se puede generar usuario.");
             throw new EmailExistenteException("El email ya existe");
         }
-        usuario.setActivo(true);
+        usuario.setIsActivo(Boolean.TRUE);
         log.info("Usuario guardado correctamente.");
         return repository.save(usuario);
     }
@@ -49,7 +49,7 @@ public class UsuarioService implements IUsuarioService {
     @Transactional
     public Usuario desactivateUsuario(Long id) throws UsuarioNoEncontradoException {
         Usuario usuario = findById(id);
-        usuario.setActivo(false);
+        usuario.setIsActivo(Boolean.FALSE);
         log.info("Usuario desactivado correctamente.");
         return repository.save(usuario);
     }
