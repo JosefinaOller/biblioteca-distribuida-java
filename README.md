@@ -37,16 +37,33 @@ Todas las solicitudes deben realizarse a través del Gateway:
 | **Usuarios** | `/api/usuarios/**` | `/biblioteca/usuarios/**` |
 | **Préstamos** | `/api/prestamos/**` | `/biblioteca/prestamos/**` |
 
-### 📖 Ejemplos de Uso
+## 📬 Colección Postman
+El proyecto incluye una colección completa de Postman con todos los endpoints preconfigurados:
+
+**📁 Ubicación**: `/docs/postman/Sistema Distribuido de Biblioteca Digital.postman_collection.json`
+
+### 🎯 Características de la colección:
+- ✅ Todos los endpoints de los tres microservicios
+- ✅ Ejemplos de requests con datos de prueba
+- ✅ Flujos completos de préstamo y devolución
+
+### 🚀 Cómo usar:
+1. Importar la colección en Postman
+2. Ejecutar los requests en orden para probar flujos completos
+
+## 📖 Ejemplos de Uso (Postman)
 ```bash
-# Crear usuario (vía Gateway)
+# 1. Crear usuario
 POST http://localhost:8080/biblioteca/usuarios
 
-# Listar libros (vía Gateway)  
-GET http://localhost:8080/biblioteca/libros
+# 2. Crear libro  
+POST http://localhost:8080/biblioteca/libros
 
-# Registrar préstamo (vía Gateway)
+# 3. Registrar préstamo
 POST http://localhost:8080/biblioteca/prestamos
+
+# 4. Devolver libro
+POST http://localhost:8080/biblioteca/prestamos/{id}/devolver
 ```
 
 ## 📊 Bases de Datos Requeridas
@@ -99,9 +116,9 @@ POSTGRES_PASSWORD=tu_contraseñaPostgresSQL
 /
 ├── eureka-server/     # Service Discovery
 ├── api-gateway/       # Punto de entrada único
-├── ms-usuarios/       # Ver README específico
-├── ms-libros/         # Ver README específico  
-├── ms-prestamos/      # Ver README específico
+├── usuarios/          # Ver README específico del microservicio de Usuarios
+├── libros/            # Ver README específico del microservicio de Libros
+├── prestamos/         # Ver README específico del microservicio de Prestamos
 └── README.md          # Este archivo
 ```
 
