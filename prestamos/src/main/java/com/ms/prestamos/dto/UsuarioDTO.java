@@ -11,5 +11,5 @@ public class UsuarioDTO {
     private Long id;
     private String nombreCompleto;
     private String email;
-    private boolean isActivo;
+    private Boolean isActivo;
 }

@@ -12,5 +12,5 @@ public class LibroDTO {
     private String titulo;
     private String autor;
     private String isbn;
-    private int ejemplaresDisponibles;
+    private Integer ejemplaresDisponibles;
 }
