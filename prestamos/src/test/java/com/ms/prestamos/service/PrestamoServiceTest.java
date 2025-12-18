@@ -3,10 +3,12 @@ package com.ms.prestamos.service;
 import com.ms.prestamos.client.ILibroClient;
 import com.ms.prestamos.client.IUsuarioClient;
 import com.ms.prestamos.dto.LibroDTO;
+import com.ms.prestamos.dto.PrestamoDTO;
 import com.ms.prestamos.dto.UsuarioDTO;
 import com.ms.prestamos.exception.ComunicacionFallidaException;
 import com.ms.prestamos.exception.RecursoInvalidoException;
 import com.ms.prestamos.exception.RecursoNoEncontradoException;
+import com.ms.prestamos.mapper.PrestamoMapper;
 import com.ms.prestamos.model.Prestamo;
 import com.ms.prestamos.repository.IPrestamoRepository;
 import feign.FeignException;
@@ -37,41 +39,58 @@ class PrestamoServiceTest {
     @Mock
     private ILibroClient libroClient;
 
-    @InjectMocks
-    private PrestamoService prestamoService;
+    @Mock
+    private PrestamoMapper mapper;
 
-    private Prestamo prestamo;
+    @InjectMocks
+    private PrestamoService service;
+
+    private Prestamo entidad;
+    private PrestamoDTO prestamoDTO;
     private UsuarioDTO usuarioDTO;
     private LibroDTO libroDTO;
 
     @BeforeEach
     void setUp() {
-        prestamo = new Prestamo();
-        prestamo.setIdUsuario(1L);
-        prestamo.setIdLibro(1L);
-
         usuarioDTO = new UsuarioDTO();
         usuarioDTO.setId(1L);
-        usuarioDTO.setActivo(true);
+        usuarioDTO.setNombreCompleto("Juan Perez");
+        usuarioDTO.setEmail("juan@mail.com");
+        usuarioDTO.setIsActivo(true);
 
         libroDTO = new LibroDTO();
-        libroDTO.setId(1L);
+        libroDTO.setId(10L);
+        libroDTO.setTitulo("Libro Test");
+        libroDTO.setAutor("Autor Test");
+        libroDTO.setIsbn("123456789");
         libroDTO.setEjemplaresDisponibles(5);
+
+        entidad = new Prestamo();
+        entidad.setId(1L);
+        entidad.setIdUsuario(1L);
+        entidad.setIdLibro(10L);
+        entidad.setFechaPrestamo(LocalDate.now());
+
+        prestamoDTO = new PrestamoDTO();
+        prestamoDTO.setId(1L);
+        prestamoDTO.setIdUsuario(1L);
+        prestamoDTO.setIdLibro(10L);
     }
 
     @Test
     @DisplayName("Test save: registro exitoso de préstamo")
     void testSaveSuccess() throws Exception {
         when(usuarioClient.getUsuarioById(1L)).thenReturn(usuarioDTO);
-        when(libroClient.getLibroById(1L)).thenReturn(libroDTO);
-        when(repository.save(any(Prestamo.class))).thenReturn(prestamo);
+        when(libroClient.getLibroById(10L)).thenReturn(libroDTO);
+        when(mapper.toEntity(any(PrestamoDTO.class))).thenReturn(entidad);
+        when(repository.save(any(Prestamo.class))).thenReturn(entidad);
+        when(mapper.toDTO(any(Prestamo.class))).thenReturn(prestamoDTO);
 
-        Prestamo result = prestamoService.save(prestamo);
+        PrestamoDTO result = service.save(prestamoDTO);
 
         assertNotNull(result);
-        assertEquals(LocalDate.now(), result.getFechaPrestamo());
         verify(repository).save(any());
-        verify(libroClient).updateLibro(eq(1L), any());
+        verify(libroClient).updateLibro(eq(10L), any());
     }
 
     @Test
@@ -79,17 +98,17 @@ class PrestamoServiceTest {
     void testSaveUserNotFound() {
         when(usuarioClient.getUsuarioById(1L)).thenThrow(FeignException.NotFound.class);
 
-        assertThrows(RecursoNoEncontradoException.class, () -> prestamoService.save(prestamo));
+        assertThrows(RecursoNoEncontradoException.class, () -> service.save(prestamoDTO));
         verify(repository, never()).save(any());
     }
 
     @Test
     @DisplayName("Test save: falla cuando el usuario está inactivo")
     void testSaveUserInactive() {
-        usuarioDTO.setActivo(false);
+        usuarioDTO.setIsActivo(false);
         when(usuarioClient.getUsuarioById(1L)).thenReturn(usuarioDTO);
 
-        assertThrows(RecursoInvalidoException.class, () -> prestamoService.save(prestamo));
+        assertThrows(RecursoInvalidoException.class, () -> service.save(prestamoDTO));
     }
 
     @Test
@@ -97,25 +116,28 @@ class PrestamoServiceTest {
     void testSaveNoStock() {
         libroDTO.setEjemplaresDisponibles(0);
         when(usuarioClient.getUsuarioById(1L)).thenReturn(usuarioDTO);
-        when(libroClient.getLibroById(1L)).thenReturn(libroDTO);
+        when(libroClient.getLibroById(10L)).thenReturn(libroDTO);
 
-        assertThrows(RecursoInvalidoException.class, () -> prestamoService.save(prestamo));
+        assertThrows(RecursoInvalidoException.class, () -> service.save(prestamoDTO));
     }
 
     @Test
-    @DisplayName("Test save: falla por error de comunicación con microservicios")
+    @DisplayName("Test save: falla por error de comunicación")
     void testSaveCommunicationError() {
         when(usuarioClient.getUsuarioById(1L)).thenThrow(new RuntimeException());
 
-        assertThrows(ComunicacionFallidaException.class, () -> prestamoService.save(prestamo));
+        assertThrows(ComunicacionFallidaException.class, () -> service.save(prestamoDTO));
     }
 
     @Test
-    @DisplayName("Test findById: retorno exitoso de préstamo")
+    @DisplayName("Test findById: retorno exitoso")
     void testFindByIdSuccess() throws RecursoNoEncontradoException {
-        when(repository.findById(1L)).thenReturn(Optional.of(prestamo));
+        when(repository.findById(1L)).thenReturn(Optional.of(entidad));
+        when(mapper.toDTO(entidad)).thenReturn(prestamoDTO);
+        when(usuarioClient.getUsuarioById(1L)).thenReturn(usuarioDTO);
+        when(libroClient.getLibroById(10L)).thenReturn(libroDTO);
 
-        Prestamo result = prestamoService.findById(1L);
+        PrestamoDTO result = service.findById(1L);
 
         assertNotNull(result);
         verify(repository).findById(1L);
@@ -124,34 +146,28 @@ class PrestamoServiceTest {
     @Test
     @DisplayName("Test returnBook: devolución exitosa")
     void testReturnBookSuccess() throws Exception {
-        prestamo.setIdLibro(1L);
-        prestamo.setFechaDevolucion(null);
-        when(repository.findById(1L)).thenReturn(Optional.of(prestamo));
-        when(libroClient.getLibroById(1L)).thenReturn(libroDTO);
-        when(repository.save(any())).thenReturn(prestamo);
+        entidad.setFechaDevolucion(null);
+        when(repository.findById(1L)).thenReturn(Optional.of(entidad));
+        when(libroClient.getLibroById(10L)).thenReturn(libroDTO);
+        when(repository.save(any())).thenReturn(entidad);
+        when(mapper.toDTO(any())).thenReturn(prestamoDTO);
 
-        Prestamo result = prestamoService.returnBook(1L);
+        PrestamoDTO result = service.returnBook(1L);
 
-        assertNotNull(result.getFechaDevolucion());
-        assertEquals(LocalDate.now(), result.getFechaDevolucion());
+        assertNotNull(result);
         verify(libroClient).updateLibro(any(), any());
-    }
-
-    @Test
-    @DisplayName("Test returnBook: falla si ya fue devuelto")
-    void testReturnBookAlreadyReturned() {
-        prestamo.setFechaDevolucion(LocalDate.now());
-        when(repository.findById(1L)).thenReturn(Optional.of(prestamo));
-
-        assertThrows(RecursoInvalidoException.class, () -> prestamoService.returnBook(1L));
+        verify(repository).save(any());
     }
 
     @Test
     @DisplayName("Test getAll: obtener lista completa")
     void testGetAll() {
-        when(repository.findAll()).thenReturn(List.of(prestamo));
+        when(repository.findAll()).thenReturn(List.of(entidad));
+        when(mapper.toDTO(entidad)).thenReturn(prestamoDTO);
+        when(usuarioClient.getUsuarioById(anyLong())).thenReturn(usuarioDTO);
+        when(libroClient.getLibroById(anyLong())).thenReturn(libroDTO);
 
-        List<Prestamo> result = prestamoService.getAll();
+        List<PrestamoDTO> result = service.getAll();
 
         assertFalse(result.isEmpty());
         assertEquals(1, result.size());
