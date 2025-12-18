@@ -44,7 +44,7 @@ mvn spring-boot:run
 ```
 
 ## 📸 Captura del análisis SonarLint
-![Análisis SonarLint](docs/images/SonarQubeAnalysisBooks.png)
+![Análisis SonarLint](../docs/images/SonarQubeAnalysisBooks.png)
 
 ## 🛠️ Características
 - ✅ CRUD completo de libros

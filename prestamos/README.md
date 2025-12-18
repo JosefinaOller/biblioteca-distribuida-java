@@ -52,7 +52,7 @@ mvn spring-boot:run
 - Un libro con stock disponible en el microservicio de Libros
 
 ## 📸 Captura del análisis SonarLint
-![Análisis SonarLint](docs/images/SonarQubeAnalysisLoans.png)
+![Análisis SonarLint](../docs/images/SonarQubeAnalysisLoans.png)
 
 ## 🛠️ Características
 - ✅ Registro de préstamos con validación cruzada
