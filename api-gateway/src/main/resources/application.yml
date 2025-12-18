@@ -1,0 +1,35 @@
+server:
+  port: 8080
+spring:
+  application:
+    name: api-gateway
+  cloud:
+    gateway:
+      routes:
+        - id: ms-libros
+          uri: lb://MS-LIBROS
+          predicates:
+            - Path=/biblioteca/libros/**
+          filters:
+            - RewritePath=/biblioteca/libros(?<segment>/?.*), /api/libros$\{segment}
+        - id: ms-usuarios
+          uri: lb://MS-USUARIOS
+          predicates:
+            - Path=/biblioteca/usuarios/**
+          filters:
+            - RewritePath=/biblioteca/usuarios(?<segment>.*), /api/usuarios$\{segment}
+        - id: ms-prestamos
+          uri: lb://MS-PRESTAMOS
+          predicates:
+            - Path=/biblioteca/prestamos/**
+          filters:
+            - RewritePath=/biblioteca/prestamos(?<segment>.*), /api/prestamos$\{segment}
+
+eureka:
+  client:
+    service-url:
+      defaultZone: http://localhost:8761/eureka/
+
+logging:
+  level:
+    org.springframework.cloud.gateway: DEBUG
