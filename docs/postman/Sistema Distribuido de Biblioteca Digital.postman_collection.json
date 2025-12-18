@@ -1,0 +1,1664 @@
+{
+	"info": {
+		"_postman_id": "35587c65-e471-42ac-9c4d-090f3db3fa5c",
+		"name": "Sistema Distribuido de Biblioteca Digital",
+		"description": "StartFragment\n\n### 📚 Overview: Sistema de Biblioteca Digital (Microservicios)\n\nEsta colección de Postman contiene todos los endpoints necesarios para interactuar con el sistema de **Biblioteca Digital** a través del **API Gateway**.\n\n#### ⚙️ Configuración de la Variable Global\n\nPara facilitar la portabilidad y evitar errores de configuración, se ha implementado el uso de una variable de colección:\n\n- **Variable:** `baseUrl`\n    \n- **Valor por defecto:** `http://localhost:8080/biblioteca`\n    \n- **Uso:** Todas las rutas de la colección comienzan con esta variable. Si necesitás cambiar el puerto o la dirección del servidor, solo debés actualizar el valor en la pestaña **Variables** de la colección.\n    \n\n#### 🚀 Requisitos de Ejecución\n\nPara que las peticiones respondan correctamente, asegurate de iniciar los servicios en el siguiente orden:\n\n1. **Eureka Server:** Puerto 8761.\n    \n2. **Microservicios (Libros, Usuarios, Préstamos):** Deben estar registrados en Eureka.\n    \n3. **API Gateway:** Puerto 8080 (Punto de entrada único).\n    \n\n#### 🛠️ Estructura de Endpoints\n\n- **Libros:** `{{baseUrl}}/libros`\n    \n- **Usuarios:** `{{baseUrl}}/usuarios`\n    \n- **Préstamos:** `{{baseUrl}}/prestamos`\n    \n\n**Nota:** Se han incluido escenarios de **\"Happy Path\"** (éxito) y **\"Unhappy Path\"** (errores controlados) para validar el manejo de excepciones y la consistencia de las respuestas del Gateway.\n\nEndFragment",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "47888248",
+		"_collection_link": "https://josefina-oller-s-team.postman.co/workspace/Team-Workspace~fe05731f-82f3-4757-89ae-a37b55b26b09/collection/47888248-35587c65-e471-42ac-9c4d-090f3db3fa5c?action=share&source=collection_link&creator=47888248"
+	},
+	"item": [
+		{
+			"name": "Libros",
+			"item": [
+				{
+					"name": "Crear libro",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"titulo\": \"Design Patterns: Elements of Reusable Object-Oriented Software\",\r\n  \"autor\": \"Erich Gamma, Richard Helm, Ralph Johnson, John Vlissides\",\r\n  \"isbn\": \"978-0201633610\",\r\n  \"ejemplaresDisponibles\": 1\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseUrl}}/libros",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"libros"
+							],
+							"query": [
+								{
+									"key": "",
+									"value": "",
+									"disabled": true
+								}
+							]
+						}
+					},
+					"response": [
+						{
+							"name": "Clean Coder",
+							"originalRequest": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n  \"titulo\": \"The Clean Coder: A Code of Conduct for Professional Programmers\",\r\n  \"autor\": \"Robert C. Martin\",\r\n  \"isbn\": \"978-0137081073\",\r\n  \"ejemplaresDisponibles\": 3\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{baseUrl}}/libros",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"libros"
+									],
+									"query": [
+										{
+											"key": "",
+											"value": "",
+											"disabled": true
+										}
+									]
+								}
+							},
+							"status": "Created",
+							"code": 201,
+							"_postman_previewlanguage": null,
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "application/json"
+								},
+								{
+									"key": "Transfer-Encoding",
+									"value": "chunked"
+								},
+								{
+									"key": "Date",
+									"value": "Wed, 17 Dec 2025 22:09:01 GMT"
+								},
+								{
+									"key": "Keep-Alive",
+									"value": "timeout=60"
+								},
+								{
+									"key": "Connection",
+									"value": "keep-alive"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"id\": 1,\n    \"titulo\": \"The Clean Coder: A Code of Conduct for Professional Programmers\",\n    \"autor\": \"Robert C. Martin\",\n    \"isbn\": \"978-0137081073\",\n    \"ejemplaresDisponibles\": 3\n}"
+						},
+						{
+							"name": "Refactoring",
+							"originalRequest": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n  \"titulo\": \"Refactoring: Improving the Design of Existing Code\",\r\n  \"autor\": \"Martin Fowler\",\r\n  \"isbn\": \"978-0134757599\",\r\n  \"ejemplaresDisponibles\": 1\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{baseUrl}}/libros",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"libros"
+									],
+									"query": [
+										{
+											"key": "",
+											"value": "",
+											"disabled": true
+										}
+									]
+								}
+							},
+							"status": "Created",
+							"code": 201,
+							"_postman_previewlanguage": null,
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "application/json"
+								},
+								{
+									"key": "Transfer-Encoding",
+									"value": "chunked"
+								},
+								{
+									"key": "Date",
+									"value": "Wed, 17 Dec 2025 22:09:30 GMT"
+								},
+								{
+									"key": "Keep-Alive",
+									"value": "timeout=60"
+								},
+								{
+									"key": "Connection",
+									"value": "keep-alive"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"id\": 2,\n    \"titulo\": \"Refactoring: Improving the Design of Existing Code\",\n    \"autor\": \"Martin Fowler\",\n    \"isbn\": \"978-0134757599\",\n    \"ejemplaresDisponibles\": 5\n}"
+						},
+						{
+							"name": "Design Patterns",
+							"originalRequest": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n  \"titulo\": \"Design Patterns: Elements of Reusable Object-Oriented Software\",\r\n  \"autor\": \"Erich Gamma, Richard Helm, Ralph Johnson, John Vlissides\",\r\n  \"isbn\": \"978-0201633610\",\r\n  \"ejemplaresDisponibles\": 1\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{baseUrl}}/libros",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"libros"
+									],
+									"query": [
+										{
+											"key": "",
+											"value": "",
+											"disabled": true
+										}
+									]
+								}
+							},
+							"status": "Created",
+							"code": 201,
+							"_postman_previewlanguage": null,
+							"header": [
+								{
+									"key": "transfer-encoding",
+									"value": "chunked"
+								},
+								{
+									"key": "Content-Type",
+									"value": "application/json"
+								},
+								{
+									"key": "Date",
+									"value": "Thu, 18 Dec 2025 04:01:06 GMT"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"id\": 1,\n    \"titulo\": \"Design Patterns: Elements of Reusable Object-Oriented Software\",\n    \"autor\": \"Erich Gamma, Richard Helm, Ralph Johnson, John Vlissides\",\n    \"isbn\": \"978-0201633610\",\n    \"ejemplaresDisponibles\": 1\n}"
+						},
+						{
+							"name": "Intento fallido de crear un libro con ISBN existente",
+							"originalRequest": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"titulo\": \"Design Patterns\",\r\n    \"autor\": \"Erich Gammas\",\r\n    \"isbn\": \"978-0201633610\",\r\n    \"ejemplaresDisponibles\": 10\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{baseUrl}}/libros",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"libros"
+									],
+									"query": [
+										{
+											"key": "",
+											"value": "",
+											"disabled": true
+										}
+									]
+								}
+							},
+							"status": "Bad Request",
+							"code": 400,
+							"_postman_previewlanguage": null,
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "text/plain;charset=UTF-8"
+								},
+								{
+									"key": "Content-Length",
+									"value": "58"
+								},
+								{
+									"key": "Date",
+									"value": "Thu, 18 Dec 2025 04:21:11 GMT"
+								}
+							],
+							"cookie": [],
+							"body": "El ISBN 978-0201633610 ya está registrado en otro libro. "
+						}
+					]
+				},
+				{
+					"name": "Obtener libros",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/libros",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"libros"
+							],
+							"query": [
+								{
+									"key": "",
+									"value": "",
+									"disabled": true
+								}
+							]
+						}
+					},
+					"response": [
+						{
+							"name": "Lista de libros",
+							"originalRequest": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{baseUrl}}/libros",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"libros"
+									],
+									"query": [
+										{
+											"key": "",
+											"value": "",
+											"disabled": true
+										}
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": null,
+							"header": [
+								{
+									"key": "transfer-encoding",
+									"value": "chunked"
+								},
+								{
+									"key": "Content-Type",
+									"value": "application/json"
+								},
+								{
+									"key": "Date",
+									"value": "Thu, 18 Dec 2025 04:11:41 GMT"
+								}
+							],
+							"cookie": [],
+							"body": "[\n    {\n        \"id\": 1,\n        \"titulo\": \"Design Patterns: Elements of Reusable Object-Oriented Software\",\n        \"autor\": \"Erich Gamma, Richard Helm, Ralph Johnson, John Vlissides\",\n        \"isbn\": \"978-0201633610\",\n        \"ejemplaresDisponibles\": 1\n    },\n    {\n        \"id\": 2,\n        \"titulo\": \"The Clean Coder: A Code of Conduct for Professional Programmers\",\n        \"autor\": \"Robert C. Martin\",\n        \"isbn\": \"978-0137081073\",\n        \"ejemplaresDisponibles\": 3\n    },\n    {\n        \"id\": 3,\n        \"titulo\": \"Refactoring: Improving the Design of Existing Code\",\n        \"autor\": \"Martin Fowler\",\n        \"isbn\": \"978-0134757599\",\n        \"ejemplaresDisponibles\": 1\n    }\n]"
+						}
+					]
+				},
+				{
+					"name": "Obtener un libro por ID",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/libros/1",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"libros",
+								"1"
+							],
+							"query": [
+								{
+									"key": "",
+									"value": "",
+									"disabled": true
+								}
+							]
+						}
+					},
+					"response": [
+						{
+							"name": "Libro ID:1 obtenido",
+							"originalRequest": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{baseUrl}}/libros/1",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"libros",
+										"1"
+									],
+									"query": [
+										{
+											"key": "",
+											"value": "",
+											"disabled": true
+										}
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": null,
+							"header": [
+								{
+									"key": "transfer-encoding",
+									"value": "chunked"
+								},
+								{
+									"key": "Content-Type",
+									"value": "application/json"
+								},
+								{
+									"key": "Date",
+									"value": "Thu, 18 Dec 2025 04:12:46 GMT"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"id\": 1,\n    \"titulo\": \"Design Patterns: Elements of Reusable Object-Oriented Software\",\n    \"autor\": \"Erich Gamma, Richard Helm, Ralph Johnson, John Vlissides\",\n    \"isbn\": \"978-0201633610\",\n    \"ejemplaresDisponibles\": 1\n}"
+						},
+						{
+							"name": "Intento fallido de buscar un libro con ID inexistente",
+							"originalRequest": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{baseUrl}}/libros/3",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"libros",
+										"3"
+									],
+									"query": [
+										{
+											"key": "",
+											"value": "",
+											"disabled": true
+										}
+									]
+								}
+							},
+							"status": "Not Found",
+							"code": 404,
+							"_postman_previewlanguage": null,
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "text/plain;charset=UTF-8"
+								},
+								{
+									"key": "Content-Length",
+									"value": "27"
+								},
+								{
+									"key": "Date",
+									"value": "Thu, 18 Dec 2025 04:22:19 GMT"
+								}
+							],
+							"cookie": [],
+							"body": "El libro con ID 3 no existe"
+						}
+					]
+				},
+				{
+					"name": "Actualizar libro",
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"titulo\": \"The Clean Coder: A Code of Conduct for Professional Programmers\",\r\n    \"autor\": \"Robert C. Martin\",\r\n    \"isbn\": \"978-0137081073\",\r\n    \"ejemplaresDisponibles\": 2\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseUrl}}/libros/2",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"libros",
+								"2"
+							],
+							"query": [
+								{
+									"key": "",
+									"value": "",
+									"disabled": true
+								}
+							]
+						}
+					},
+					"response": [
+						{
+							"name": "Libro ID:2 con stock actualizado",
+							"originalRequest": {
+								"method": "PUT",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"titulo\": \"The Clean Coder: A Code of Conduct for Professional Programmers\",\r\n    \"autor\": \"Robert C. Martin\",\r\n    \"isbn\": \"978-0137081073\",\r\n    \"ejemplaresDisponibles\": 2\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{baseUrl}}/libros/2",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"libros",
+										"2"
+									],
+									"query": [
+										{
+											"key": "",
+											"value": "",
+											"disabled": true
+										}
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": null,
+							"header": [
+								{
+									"key": "transfer-encoding",
+									"value": "chunked"
+								},
+								{
+									"key": "Content-Type",
+									"value": "application/json"
+								},
+								{
+									"key": "Date",
+									"value": "Thu, 18 Dec 2025 04:15:39 GMT"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"id\": 2,\n    \"titulo\": \"The Clean Coder: A Code of Conduct for Professional Programmers\",\n    \"autor\": \"Robert C. Martin\",\n    \"isbn\": \"978-0137081073\",\n    \"ejemplaresDisponibles\": 2\n}"
+						}
+					]
+				},
+				{
+					"name": "Eliminar libro por ID",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/libros/3",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"libros",
+								"3"
+							],
+							"query": [
+								{
+									"key": "",
+									"value": "",
+									"disabled": true
+								}
+							]
+						}
+					},
+					"response": [
+						{
+							"name": "Libro ID:3 eliminado",
+							"originalRequest": {
+								"method": "DELETE",
+								"header": [],
+								"url": {
+									"raw": "{{baseUrl}}/libros/3",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"libros",
+										"3"
+									],
+									"query": [
+										{
+											"key": "",
+											"value": "",
+											"disabled": true
+										}
+									]
+								}
+							},
+							"status": "No Content",
+							"code": 204,
+							"_postman_previewlanguage": null,
+							"header": [
+								{
+									"key": "Date",
+									"value": "Thu, 18 Dec 2025 04:17:51 GMT"
+								}
+							],
+							"cookie": [],
+							"body": null
+						}
+					]
+				}
+			]
+		},
+		{
+			"name": "Usuarios",
+			"item": [
+				{
+					"name": "Crear usuario",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"nombreCompleto\": \"Adele Adkins\",\r\n    \"email\": \"adeleadkins@gmail.com\"\r\n  }",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseUrl}}/usuarios",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"usuarios"
+							]
+						}
+					},
+					"response": [
+						{
+							"name": "Lionel Messi",
+							"originalRequest": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n  \"nombreCompleto\": \"Lionel Messi\",\r\n  \"email\": \"info@messi.com\"\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{baseUrl}}/usuarios",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"usuarios"
+									]
+								}
+							},
+							"status": "Created",
+							"code": 201,
+							"_postman_previewlanguage": null,
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "application/json"
+								},
+								{
+									"key": "Transfer-Encoding",
+									"value": "chunked"
+								},
+								{
+									"key": "Date",
+									"value": "Wed, 17 Dec 2025 21:38:42 GMT"
+								},
+								{
+									"key": "Keep-Alive",
+									"value": "timeout=60"
+								},
+								{
+									"key": "Connection",
+									"value": "keep-alive"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"id\": 1,\n    \"nombreCompleto\": \"Lionel Messi\",\n    \"email\": \"info@messi.com\",\n    \"isActivo\": true\n}"
+						},
+						{
+							"name": "Ada Lovelace",
+							"originalRequest": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"nombreCompleto\": \"Ada Lovelace\",\r\n    \"email\": \"ada.programming@analytical.org\"\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{baseUrl}}/usuarios",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"usuarios"
+									]
+								}
+							},
+							"status": "Created",
+							"code": 201,
+							"_postman_previewlanguage": null,
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "application/json"
+								},
+								{
+									"key": "Transfer-Encoding",
+									"value": "chunked"
+								},
+								{
+									"key": "Date",
+									"value": "Wed, 17 Dec 2025 21:40:12 GMT"
+								},
+								{
+									"key": "Keep-Alive",
+									"value": "timeout=60"
+								},
+								{
+									"key": "Connection",
+									"value": "keep-alive"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"id\": 2,\n    \"nombreCompleto\": \"Ada Lovelace\",\n    \"email\": \"ada.programming@analytical.org\",\n    \"isActivo\": true\n}"
+						},
+						{
+							"name": "Linus Torvalds",
+							"originalRequest": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"nombreCompleto\": \"Linus Torvalds\",\r\n    \"email\": \"linus@linuxfoundation.org\"\r\n  }",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{baseUrl}}/usuarios",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"usuarios"
+									]
+								}
+							},
+							"status": "Created",
+							"code": 201,
+							"_postman_previewlanguage": null,
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "application/json"
+								},
+								{
+									"key": "Transfer-Encoding",
+									"value": "chunked"
+								},
+								{
+									"key": "Date",
+									"value": "Wed, 17 Dec 2025 21:41:01 GMT"
+								},
+								{
+									"key": "Keep-Alive",
+									"value": "timeout=60"
+								},
+								{
+									"key": "Connection",
+									"value": "keep-alive"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"id\": 3,\n    \"nombreCompleto\": \"Linus Torvalds\",\n    \"email\": \"linus@linuxfoundation.org\",\n    \"isActivo\": true\n}"
+						},
+						{
+							"name": "Adele Adkins",
+							"originalRequest": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"nombreCompleto\": \"Adele Adkins\",\r\n    \"email\": \"adeleadkins@gmail.com\"\r\n  }",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{baseUrl}}/usuarios",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"usuarios"
+									]
+								}
+							},
+							"status": "Created",
+							"code": 201,
+							"_postman_previewlanguage": null,
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "application/json"
+								},
+								{
+									"key": "Transfer-Encoding",
+									"value": "chunked"
+								},
+								{
+									"key": "Date",
+									"value": "Wed, 17 Dec 2025 21:59:12 GMT"
+								},
+								{
+									"key": "Keep-Alive",
+									"value": "timeout=60"
+								},
+								{
+									"key": "Connection",
+									"value": "keep-alive"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"id\": 4,\n    \"nombreCompleto\": \"Adele Adkins\",\n    \"email\": \"adeleadkins@gmail.com\",\n    \"isActivo\": true\n}"
+						},
+						{
+							"name": "Intento fallido de crear usuario con email duplicado",
+							"originalRequest": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"nombreCompleto\": \"Adele Adkins\",\r\n    \"email\": \"adeleadkins@gmail.com\"\r\n  }",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{baseUrl}}/usuarios",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"usuarios"
+									]
+								}
+							},
+							"status": "Created",
+							"code": 201,
+							"_postman_previewlanguage": null,
+							"header": [
+								{
+									"key": "transfer-encoding",
+									"value": "chunked"
+								},
+								{
+									"key": "Content-Type",
+									"value": "application/json"
+								},
+								{
+									"key": "Date",
+									"value": "Thu, 18 Dec 2025 04:29:13 GMT"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"id\": 4,\n    \"nombreCompleto\": \"Adele Adkins\",\n    \"email\": \"adeleadkins@gmail.com\",\n    \"isActivo\": true\n}"
+						}
+					]
+				},
+				{
+					"name": "Obtener usuarios",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"nombreCompleto\": \"Lionel Messi\",\r\n  \"email\": \"info@messi.com\"\r\n}"
+						},
+						"url": {
+							"raw": "{{baseUrl}}/usuarios",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"usuarios"
+							]
+						}
+					},
+					"response": [
+						{
+							"name": "Lista de usuarios",
+							"originalRequest": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{baseUrl}}/usuarios",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"usuarios"
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": null,
+							"header": [
+								{
+									"key": "transfer-encoding",
+									"value": "chunked"
+								},
+								{
+									"key": "Content-Type",
+									"value": "application/json"
+								},
+								{
+									"key": "Date",
+									"value": "Thu, 18 Dec 2025 04:31:03 GMT"
+								}
+							],
+							"cookie": [],
+							"body": "[\n    {\n        \"id\": 1,\n        \"nombreCompleto\": \"Lionel Messi\",\n        \"email\": \"info@messi.com\",\n        \"isActivo\": true\n    },\n    {\n        \"id\": 2,\n        \"nombreCompleto\": \"Ada Lovelace\",\n        \"email\": \"ada.programming@analytical.org\",\n        \"isActivo\": true\n    },\n    {\n        \"id\": 3,\n        \"nombreCompleto\": \"Linus Torvalds\",\n        \"email\": \"linus@linuxfoundation.org\",\n        \"isActivo\": true\n    },\n    {\n        \"id\": 4,\n        \"nombreCompleto\": \"Adele Adkins\",\n        \"email\": \"adeleadkins@gmail.com\",\n        \"isActivo\": true\n    }\n]"
+						}
+					]
+				},
+				{
+					"name": "Obtener un usuario por ID",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/usuarios/1",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"usuarios",
+								"1"
+							]
+						}
+					},
+					"response": [
+						{
+							"name": "Usuario ID:1 obtenido",
+							"originalRequest": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{baseUrl}}/usuarios/1",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"usuarios",
+										"1"
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": null,
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "application/json"
+								},
+								{
+									"key": "Transfer-Encoding",
+									"value": "chunked"
+								},
+								{
+									"key": "Date",
+									"value": "Wed, 17 Dec 2025 21:49:02 GMT"
+								},
+								{
+									"key": "Keep-Alive",
+									"value": "timeout=60"
+								},
+								{
+									"key": "Connection",
+									"value": "keep-alive"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"id\": 1,\n    \"nombreCompleto\": \"Lionel Messi\",\n    \"email\": \"info@messi.com\",\n    \"isActivo\": true\n}"
+						},
+						{
+							"name": "Intento fallido de buscar un usuario con ID inexistente",
+							"originalRequest": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{baseUrl}}/usuarios/5",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"usuarios",
+										"5"
+									]
+								}
+							},
+							"status": "Not Found",
+							"code": 404,
+							"_postman_previewlanguage": null,
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "text/plain;charset=UTF-8"
+								},
+								{
+									"key": "Content-Length",
+									"value": "29"
+								},
+								{
+									"key": "Date",
+									"value": "Thu, 18 Dec 2025 04:32:50 GMT"
+								}
+							],
+							"cookie": [],
+							"body": "El usuario con ID 5 no existe"
+						}
+					]
+				},
+				{
+					"name": "Desactivar un usuario por ID",
+					"request": {
+						"method": "PATCH",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/usuarios/3/desactivar",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"usuarios",
+								"3",
+								"desactivar"
+							]
+						}
+					},
+					"response": [
+						{
+							"name": "Desactivar un usuario activo ID: 3",
+							"originalRequest": {
+								"method": "PATCH",
+								"header": [],
+								"url": {
+									"raw": "{{baseUrl}}/usuarios/3/desactivar",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"usuarios",
+										"3",
+										"desactivar"
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": null,
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "application/json"
+								},
+								{
+									"key": "Transfer-Encoding",
+									"value": "chunked"
+								},
+								{
+									"key": "Date",
+									"value": "Wed, 17 Dec 2025 21:51:51 GMT"
+								},
+								{
+									"key": "Keep-Alive",
+									"value": "timeout=60"
+								},
+								{
+									"key": "Connection",
+									"value": "keep-alive"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"id\": 3,\n    \"nombreCompleto\": \"Linus Torvalds\",\n    \"email\": \"linus@linuxfoundation.org\",\n    \"isActivo\": false\n}"
+						}
+					]
+				},
+				{
+					"name": "Eliminar usuario",
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/usuarios/4",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"usuarios",
+								"4"
+							]
+						}
+					},
+					"response": [
+						{
+							"name": "Eliminar el usuario con ID:4",
+							"originalRequest": {
+								"method": "DELETE",
+								"header": [],
+								"url": {
+									"raw": "{{baseUrl}}/usuarios/4",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"usuarios",
+										"4"
+									]
+								}
+							},
+							"status": "No Content",
+							"code": 204,
+							"_postman_previewlanguage": null,
+							"header": [
+								{
+									"key": "Date",
+									"value": "Wed, 17 Dec 2025 21:59:54 GMT"
+								},
+								{
+									"key": "Keep-Alive",
+									"value": "timeout=60"
+								},
+								{
+									"key": "Connection",
+									"value": "keep-alive"
+								}
+							],
+							"cookie": [],
+							"body": null
+						}
+					]
+				}
+			]
+		},
+		{
+			"name": "Préstamos",
+			"item": [
+				{
+					"name": "Registrar un préstamo",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"idLibro\": 1, \r\n    \"idUsuario\": 3\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseUrl}}/prestamos",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"prestamos"
+							],
+							"query": [
+								{
+									"key": "",
+									"value": "",
+									"disabled": true
+								}
+							]
+						}
+					},
+					"response": [
+						{
+							"name": "Registro de un prestamo con usuario (ID 1) y libro (ID 1)",
+							"originalRequest": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"idLibro\": 1, \r\n    \"idUsuario\": 1\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{baseUrl}}/prestamos",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"prestamos"
+									],
+									"query": [
+										{
+											"key": "",
+											"value": "",
+											"disabled": true
+										}
+									]
+								}
+							},
+							"status": "Created",
+							"code": 201,
+							"_postman_previewlanguage": null,
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "application/json"
+								},
+								{
+									"key": "Transfer-Encoding",
+									"value": "chunked"
+								},
+								{
+									"key": "Date",
+									"value": "Wed, 17 Dec 2025 22:24:58 GMT"
+								},
+								{
+									"key": "Keep-Alive",
+									"value": "timeout=60"
+								},
+								{
+									"key": "Connection",
+									"value": "keep-alive"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"id\": 1,\n    \"idUsuario\": 1,\n    \"idLibro\": 1,\n    \"fechaPrestamo\": \"2025-12-17\",\n    \"fechaDevolucion\": null\n}"
+						},
+						{
+							"name": "Registro fallido por falta de stock",
+							"originalRequest": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"idLibro\": 1, \r\n    \"idUsuario\": 2\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{baseUrl}}/prestamos",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"prestamos"
+									],
+									"query": [
+										{
+											"key": "",
+											"value": "",
+											"disabled": true
+										}
+									]
+								}
+							},
+							"status": "Created",
+							"code": 201,
+							"_postman_previewlanguage": null,
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "application/json"
+								},
+								{
+									"key": "Transfer-Encoding",
+									"value": "chunked"
+								},
+								{
+									"key": "Date",
+									"value": "Wed, 17 Dec 2025 22:27:30 GMT"
+								},
+								{
+									"key": "Keep-Alive",
+									"value": "timeout=60"
+								},
+								{
+									"key": "Connection",
+									"value": "keep-alive"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"id\": 2,\n    \"idUsuario\": 2,\n    \"idLibro\": 1,\n    \"fechaPrestamo\": \"2025-12-17\",\n    \"fechaDevolucion\": null\n}"
+						},
+						{
+							"name": "Registro fallido por usuario inactivo",
+							"originalRequest": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"idLibro\": 1, \r\n    \"idUsuario\": 3\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{baseUrl}}/prestamos",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"prestamos"
+									],
+									"query": [
+										{
+											"key": "",
+											"value": "",
+											"disabled": true
+										}
+									]
+								}
+							},
+							"status": "Conflict",
+							"code": 409,
+							"_postman_previewlanguage": null,
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "text/plain;charset=UTF-8"
+								},
+								{
+									"key": "Content-Length",
+									"value": "24"
+								},
+								{
+									"key": "Date",
+									"value": "Wed, 17 Dec 2025 22:30:40 GMT"
+								},
+								{
+									"key": "Keep-Alive",
+									"value": "timeout=60"
+								},
+								{
+									"key": "Connection",
+									"value": "keep-alive"
+								}
+							],
+							"cookie": [],
+							"body": "El usuario no es activo."
+						}
+					]
+				},
+				{
+					"name": "Obtener el historial de prestamos",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/prestamos",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"prestamos"
+							],
+							"query": [
+								{
+									"key": "",
+									"value": "",
+									"disabled": true
+								}
+							]
+						}
+					},
+					"response": [
+						{
+							"name": "Historial de prestamos",
+							"originalRequest": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{baseUrl}}/prestamos",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"prestamos"
+									],
+									"query": [
+										{
+											"key": "",
+											"value": "",
+											"disabled": true
+										}
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": null,
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "application/json"
+								},
+								{
+									"key": "Transfer-Encoding",
+									"value": "chunked"
+								},
+								{
+									"key": "Date",
+									"value": "Wed, 17 Dec 2025 22:32:07 GMT"
+								},
+								{
+									"key": "Keep-Alive",
+									"value": "timeout=60"
+								},
+								{
+									"key": "Connection",
+									"value": "keep-alive"
+								}
+							],
+							"cookie": [],
+							"body": "[\n    {\n        \"id\": 1,\n        \"idUsuario\": 1,\n        \"idLibro\": 1,\n        \"fechaPrestamo\": \"2025-12-17\",\n        \"fechaDevolucion\": null\n    },\n    {\n        \"id\": 2,\n        \"idUsuario\": 2,\n        \"idLibro\": 1,\n        \"fechaPrestamo\": \"2025-12-17\",\n        \"fechaDevolucion\": null\n    }\n]"
+						}
+					]
+				},
+				{
+					"name": "Obtener prestamo por ID",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/prestamos/1",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"prestamos",
+								"1"
+							],
+							"query": [
+								{
+									"key": "",
+									"value": "",
+									"disabled": true
+								}
+							]
+						}
+					},
+					"response": [
+						{
+							"name": "Obtener prestamo por ID:1",
+							"originalRequest": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{baseUrl}}/prestamos/1",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"prestamos",
+										"1"
+									],
+									"query": [
+										{
+											"key": "",
+											"value": "",
+											"disabled": true
+										}
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": null,
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "application/json"
+								},
+								{
+									"key": "Transfer-Encoding",
+									"value": "chunked"
+								},
+								{
+									"key": "Date",
+									"value": "Wed, 17 Dec 2025 22:33:08 GMT"
+								},
+								{
+									"key": "Keep-Alive",
+									"value": "timeout=60"
+								},
+								{
+									"key": "Connection",
+									"value": "keep-alive"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"id\": 1,\n    \"idUsuario\": 1,\n    \"idLibro\": 1,\n    \"fechaPrestamo\": \"2025-12-17\",\n    \"fechaDevolucion\": null\n}"
+						}
+					]
+				},
+				{
+					"name": "Devolver el libro",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/prestamos/1/devolver",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"prestamos",
+								"1",
+								"devolver"
+							]
+						}
+					},
+					"response": [
+						{
+							"name": "Devuelto el libro con prestamo ID:1",
+							"originalRequest": {
+								"method": "POST",
+								"header": [],
+								"url": {
+									"raw": "{{baseUrl}}/prestamos/1/devolver",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"prestamos",
+										"1",
+										"devolver"
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": null,
+							"header": [
+								{
+									"key": "transfer-encoding",
+									"value": "chunked"
+								},
+								{
+									"key": "Content-Type",
+									"value": "application/json"
+								},
+								{
+									"key": "Date",
+									"value": "Thu, 18 Dec 2025 04:45:25 GMT"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"id\": 1,\n    \"idUsuario\": 1,\n    \"idLibro\": 1,\n    \"fechaPrestamo\": \"2025-12-18\",\n    \"fechaDevolucion\": \"2025-12-18\"\n}"
+						},
+						{
+							"name": "Devuelto fallido por prestamo devuelto",
+							"originalRequest": {
+								"method": "POST",
+								"header": [],
+								"url": {
+									"raw": "{{baseUrl}}/prestamos/1/devolver",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"prestamos",
+										"1",
+										"devolver"
+									]
+								}
+							},
+							"status": "Conflict",
+							"code": 409,
+							"_postman_previewlanguage": null,
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "text/plain;charset=UTF-8"
+								},
+								{
+									"key": "Content-Length",
+									"value": "28"
+								},
+								{
+									"key": "Date",
+									"value": "Wed, 17 Dec 2025 22:35:36 GMT"
+								},
+								{
+									"key": "Keep-Alive",
+									"value": "timeout=60"
+								},
+								{
+									"key": "Connection",
+									"value": "keep-alive"
+								}
+							],
+							"cookie": [],
+							"body": "El prestamo ya fue devuelto."
+						}
+					]
+				}
+			]
+		}
+	],
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"packages": {},
+				"requests": {},
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"packages": {},
+				"requests": {},
+				"exec": [
+					""
+				]
+			}
+		}
+	],
+	"variable": [
+		{
+			"key": "baseUrl",
+			"value": ""
+		}
+	]
+}
