@@ -1,9 +1,9 @@
 package com.ms.prestamos.controller;
 
+import com.ms.prestamos.dto.PrestamoDTO;
 import com.ms.prestamos.exception.ComunicacionFallidaException;
 import com.ms.prestamos.exception.RecursoInvalidoException;
 import com.ms.prestamos.exception.RecursoNoEncontradoException;
-import com.ms.prestamos.model.Prestamo;
 import com.ms.prestamos.service.IPrestamoService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.ArraySchema;
@@ -16,7 +16,6 @@ import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
-
 import java.util.List;
 
 @RestController
@@ -37,7 +36,7 @@ public class PrestamoController {
     )
     @ApiResponses(value = {
             @ApiResponse(responseCode = "201", description = "Préstamo registrado exitosamente.",
-                    content = @Content(schema = @Schema(implementation = Prestamo.class))),
+                    content = @Content(schema = @Schema(implementation = PrestamoDTO.class))),
             @ApiResponse(responseCode = "400", description = "Datos de entrada inválidos."),
             @ApiResponse(responseCode = "404", description = "Usuario o Libro no encontrado."),
             @ApiResponse(responseCode = "409", description = "Conflicto: Usuario inactivo o Libro sin stock."),
@@ -45,7 +44,7 @@ public class PrestamoController {
     })
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
-    public Prestamo createPrestamo(@Valid @RequestBody Prestamo prestamo) throws ComunicacionFallidaException, RecursoInvalidoException, RecursoNoEncontradoException {
+    public PrestamoDTO createPrestamo(@Valid @RequestBody PrestamoDTO prestamo) throws ComunicacionFallidaException, RecursoInvalidoException, RecursoNoEncontradoException {
         return service.save(prestamo);
     }
 
@@ -54,10 +53,10 @@ public class PrestamoController {
             description = "Retorna una lista de todos los préstamos registrados."
     )
     @ApiResponse(responseCode = "200", description = "Lista obtenida exitosamente.",
-            content = @Content(array = @ArraySchema(schema = @Schema(implementation = Prestamo.class))))
+            content = @Content(array = @ArraySchema(schema = @Schema(implementation = PrestamoDTO.class))))
     @GetMapping
     @ResponseStatus(HttpStatus.OK)
-    public List<Prestamo> getPrestamos() {
+    public List<PrestamoDTO> getPrestamos() {
         return service.getAll();
     }
 
@@ -66,14 +65,15 @@ public class PrestamoController {
             description = "Retorna los detalles de un préstamo específico."
     )
     @ApiResponses(value = {
-            @ApiResponse(responseCode = "200", description = "Préstamo encontrado."),
+            @ApiResponse(responseCode = "200", description = "Préstamo encontrado.",
+                    content = @Content(schema = @Schema(implementation = PrestamoDTO.class))),
             @ApiResponse(responseCode = "404", description = "ID de préstamo inexistente.")
     })
 
 
     @GetMapping("{id}")
     @ResponseStatus(HttpStatus.OK)
-    public Prestamo findPrestamoById(@PathVariable Long id) throws RecursoNoEncontradoException {
+    public PrestamoDTO findPrestamoById(@PathVariable Long id) throws RecursoNoEncontradoException {
         return service.findById(id);
     }
 
@@ -83,7 +83,7 @@ public class PrestamoController {
     )
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "Devolución procesada correctamente.",
-                    content = @Content(schema = @Schema(implementation = Prestamo.class))),
+                    content = @Content(schema = @Schema(implementation = PrestamoDTO.class))),
             @ApiResponse(responseCode = "404", description = "El préstamo no existe."),
             @ApiResponse(responseCode = "409", description = "El préstamo ya fue devuelto previamente."),
             @ApiResponse(responseCode = "503", description = "No se pudo actualizar el stock en el microservicio de libros.")
@@ -91,7 +91,7 @@ public class PrestamoController {
 
     @PostMapping("{id}/devolver")
     @ResponseStatus(HttpStatus.OK)
-    public Prestamo returnBook(@PathVariable Long id) throws RecursoInvalidoException, ComunicacionFallidaException, RecursoNoEncontradoException {
+    public PrestamoDTO returnBook(@PathVariable Long id) throws RecursoInvalidoException, ComunicacionFallidaException, RecursoNoEncontradoException {
         return service.returnBook(id);
     }
 }
