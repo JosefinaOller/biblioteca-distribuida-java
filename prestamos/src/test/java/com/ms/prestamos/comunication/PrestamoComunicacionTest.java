@@ -1,7 +1,7 @@
 package com.ms.prestamos.comunication;
 
+import com.ms.prestamos.dto.PrestamoDTO;
 import com.ms.prestamos.exception.RecursoInvalidoException;
-import com.ms.prestamos.model.Prestamo;
 import com.ms.prestamos.service.IPrestamoService;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeAll;
@@ -34,7 +34,7 @@ class PrestamoComunicacionTest {
     private static ClientAndServer mockServer;
 
     @Autowired
-    private IPrestamoService prestamoService;
+    private IPrestamoService service;
 
     @BeforeAll
     static void startServer() {
@@ -55,7 +55,6 @@ class PrestamoComunicacionTest {
     @Test
     @DisplayName("MockServer: Validar creación de préstamo con respuesta exitosa (200 OK)")
     void testCommunicationSuccess() {
-
         mockServer.when(
                 request()
                         .withMethod("GET")
@@ -64,7 +63,7 @@ class PrestamoComunicacionTest {
                 response()
                         .withStatusCode(200)
                         .withHeader(new Header("Content-Type", "application/json"))
-                        .withBody(json("{\"id\": 1, \"isActivo\": true}"))
+                        .withBody(json("{\"id\": 1, \"nombreCompleto\": \"Juan Perez\", \"email\": \"juan@mail.com\", \"isActivo\": true}"))
         );
 
         mockServer.when(
@@ -74,7 +73,7 @@ class PrestamoComunicacionTest {
         ).respond(
                 response()
                         .withStatusCode(200)
-                        .withBody(json("{\"id\": 10, \"ejemplaresDisponibles\": 5}"))
+                        .withBody(json("{\"id\": 10, \"titulo\": \"Libro Test\", \"autor\": \"Autor\", \"isbn\": \"123456789\", \"ejemplaresDisponibles\": 5}"))
         );
 
         mockServer.when(
@@ -85,8 +84,11 @@ class PrestamoComunicacionTest {
                 response().withStatusCode(200)
         );
 
-        Prestamo p = new Prestamo(null, 1L, 10L, null, null);
-        assertDoesNotThrow(() -> prestamoService.save(p));
+        PrestamoDTO dto = new PrestamoDTO();
+        dto.setIdUsuario(1L);
+        dto.setIdLibro(10L);
+
+        assertDoesNotThrow(() -> service.save(dto));
     }
 
     @Test
@@ -99,11 +101,14 @@ class PrestamoComunicacionTest {
         ).respond(
                 response()
                         .withStatusCode(200)
-                        .withBody(json("{\"id\": 2, \"isActivo\": false}"))
+                        .withBody(json("{\"id\": 2, \"nombreCompleto\": \"Usuario Inactivo\", \"isActivo\": false}"))
                         .withDelay(TimeUnit.MILLISECONDS, 100)
         );
 
-        Prestamo p = new Prestamo(null, 2L, 10L, null, null);
-        assertThrows(RecursoInvalidoException.class, () -> prestamoService.save(p));
+        PrestamoDTO dto = new PrestamoDTO();
+        dto.setIdUsuario(2L);
+        dto.setIdLibro(10L);
+
+        assertThrows(RecursoInvalidoException.class, () -> service.save(dto));
     }
 }
