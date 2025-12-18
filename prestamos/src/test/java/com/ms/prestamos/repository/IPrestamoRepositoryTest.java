@@ -17,22 +17,22 @@ import static org.junit.jupiter.api.Assertions.*;
 class IPrestamoRepositoryTest {
 
     @Autowired
-    private IPrestamoRepository prestamoRepository;
+    private IPrestamoRepository repository;
     private Prestamo prestamo;
 
     @BeforeEach
     void setUp() {
         prestamo = new Prestamo();
         prestamo.setIdUsuario(1L);
-        prestamo.setIdLibro(1L);
+        prestamo.setIdLibro(10L);
         prestamo.setFechaPrestamo(LocalDate.now());
     }
 
     @Test
     @DisplayName("Test repository: guardar y buscar préstamo por ID")
     void testSaveAndFindById() {
-        Prestamo saved = prestamoRepository.save(prestamo);
-        Optional<Prestamo> found = prestamoRepository.findById(saved.getId());
+        Prestamo saved = repository.save(prestamo);
+        Optional<Prestamo> found = repository.findById(saved.getId());
 
         assertTrue(found.isPresent());
         assertEquals(saved.getId(), found.get().getId());
@@ -42,15 +42,15 @@ class IPrestamoRepositoryTest {
     @Test
     @DisplayName("Test repository: listar todos los préstamos")
     void testFindAll() {
-        prestamoRepository.save(prestamo);
+        repository.save(prestamo);
 
         Prestamo otroPrestamo = new Prestamo();
         otroPrestamo.setIdUsuario(2L);
         otroPrestamo.setIdLibro(5L);
         otroPrestamo.setFechaPrestamo(LocalDate.now());
-        prestamoRepository.save(otroPrestamo);
+        repository.save(otroPrestamo);
 
-        List<Prestamo> lista = prestamoRepository.findAll();
+        List<Prestamo> lista = repository.findAll();
 
         assertEquals(2, lista.size());
     }
@@ -58,10 +58,10 @@ class IPrestamoRepositoryTest {
     @Test
     @DisplayName("Test repository: actualizar fecha de devolución")
     void testUpdatePrestamo() {
-        Prestamo saved = prestamoRepository.save(prestamo);
+        Prestamo saved = repository.save(prestamo);
         saved.setFechaDevolucion(LocalDate.now());
 
-        Prestamo updated = prestamoRepository.save(saved);
+        Prestamo updated = repository.save(saved);
 
         assertNotNull(updated.getFechaDevolucion());
         assertEquals(LocalDate.now(), updated.getFechaDevolucion());
@@ -70,7 +70,7 @@ class IPrestamoRepositoryTest {
     @Test
     @DisplayName("Test repository: buscar ID inexistente retorna vacío")
     void testFindByIdNotFound() {
-        Optional<Prestamo> found = prestamoRepository.findById(999L);
+        Optional<Prestamo> found = repository.findById(999L);
         assertTrue(found.isEmpty());
     }
 }
