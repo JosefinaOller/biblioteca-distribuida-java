@@ -1,13 +1,14 @@
 package com.ms.prestamos.service;
 
+import com.ms.prestamos.dto.PrestamoDTO;
 import com.ms.prestamos.exception.*;
 import com.ms.prestamos.model.Prestamo;
 import java.util.List;
 
 public interface IPrestamoService {
 
-    Prestamo save(Prestamo prestamo) throws ComunicacionFallidaException, RecursoNoEncontradoException, RecursoInvalidoException;
-    List<Prestamo> getAll();
-    Prestamo findById(Long id) throws RecursoNoEncontradoException;
-    Prestamo returnBook(Long id) throws RecursoNoEncontradoException, RecursoInvalidoException, ComunicacionFallidaException;
+    PrestamoDTO save(PrestamoDTO prestamoDTO) throws ComunicacionFallidaException, RecursoNoEncontradoException, RecursoInvalidoException;
+    List<PrestamoDTO> getAll();
+    PrestamoDTO findById(Long id) throws RecursoNoEncontradoException;
+    PrestamoDTO returnBook(Long id) throws RecursoNoEncontradoException, RecursoInvalidoException, ComunicacionFallidaException;
 }

@@ -3,8 +3,10 @@ package com.ms.prestamos.service;
 import com.ms.prestamos.client.ILibroClient;
 import com.ms.prestamos.client.IUsuarioClient;
 import com.ms.prestamos.dto.LibroDTO;
+import com.ms.prestamos.dto.PrestamoDTO;
 import com.ms.prestamos.dto.UsuarioDTO;
 import com.ms.prestamos.exception.*;
+import com.ms.prestamos.mapper.PrestamoMapper;
 import com.ms.prestamos.model.Prestamo;
 import com.ms.prestamos.repository.IPrestamoRepository;
 import feign.FeignException;
@@ -15,6 +17,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 import java.time.LocalDate;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -24,24 +27,30 @@ public class PrestamoService implements IPrestamoService{
     private final IPrestamoRepository repository;
     private final IUsuarioClient usuarioClient;
     private final ILibroClient libroClient;
+    private final PrestamoMapper mapper;
 
 
     @Override
     @Transactional
-    public Prestamo save(Prestamo prestamo) throws ComunicacionFallidaException, RecursoNoEncontradoException, RecursoInvalidoException {
+    public PrestamoDTO save(PrestamoDTO prestamoDTO) throws ComunicacionFallidaException, RecursoNoEncontradoException, RecursoInvalidoException {
 
-        validateUserExists(prestamo.getIdUsuario());
-        LibroDTO libro = findAndValidateBookStock(prestamo.getIdLibro());
+        UsuarioDTO usuario = validateUserExists(prestamoDTO.getIdUsuario());
+        LibroDTO libro = findAndValidateBookStock(prestamoDTO.getIdLibro());
 
-        setLoanDate(prestamo);
-        prestamo.setFechaDevolucion(null);
+        Prestamo entidad = mapper.toEntity(prestamoDTO);
+        setLoanDate(entidad);
+        entidad.setFechaDevolucion(null);
 
-        Prestamo savedPrestamo = repository.save(prestamo);
-        log.info("Préstamo registrado correctamente con ID {}", savedPrestamo.getId());
+        Prestamo entidadGuardada = repository.save(entidad);
+        log.info("Préstamo registrado correctamente con ID {}", entidadGuardada.getId());
 
         updateRemoteStock(libro);
 
-        return savedPrestamo;
+        PrestamoDTO respuesta = mapper.toDTO(entidadGuardada);
+        respuesta.setUsuario(usuario);
+        respuesta.setLibro(libro);
+
+        return respuesta;
     }
 
     private void updateRemoteStock(LibroDTO libro) throws ComunicacionFallidaException {
@@ -81,7 +90,7 @@ public class PrestamoService implements IPrestamoService{
         return libro;
     }
 
-    private void validateUserExists(Long idUsuario) throws RecursoNoEncontradoException, ComunicacionFallidaException, RecursoInvalidoException {
+    private UsuarioDTO validateUserExists(Long idUsuario) throws RecursoNoEncontradoException, ComunicacionFallidaException, RecursoInvalidoException {
         UsuarioDTO usuario;
         try {
             usuario = usuarioClient.getUsuarioById(idUsuario);
@@ -97,35 +106,42 @@ public class PrestamoService implements IPrestamoService{
             throw new RecursoInvalidoException("El usuario no es activo.");
         }
         log.info("Usuario validado correctamente.");
+        return usuario;
     }
 
     @Override
-    public List<Prestamo> getAll() {
-        return repository.findAll();
+    public List<PrestamoDTO> getAll() {
+        return repository.findAll()
+                .stream()
+                .map(prestamo -> {
+                    PrestamoDTO dto = mapper.toDTO(prestamo);
+                    return enrichPrestamo(dto);
+                })
+                .collect(Collectors.toList());
     }
 
     @Override
-    public Prestamo findById(Long id) throws RecursoNoEncontradoException {
-        return repository.findById(id).orElseThrow(()->{
-            log.warn("No se encontró el prestamo con ID: {}", id);
-            return new RecursoNoEncontradoException("El prestamo con ID " + id + " no existe");
-        });
+    public PrestamoDTO findById(Long id) throws RecursoNoEncontradoException {
+        Prestamo entity = findEntityById(id);
+        PrestamoDTO dto = mapper.toDTO(entity);
+        return enrichPrestamo(dto);
     }
 
     @Override
     @Transactional
-    public Prestamo returnBook(Long id) throws RecursoNoEncontradoException, RecursoInvalidoException, ComunicacionFallidaException {
-        Prestamo prestamo = findById(id);
+    public PrestamoDTO returnBook(Long id) throws RecursoNoEncontradoException, RecursoInvalidoException, ComunicacionFallidaException {
+        Prestamo prestamo = findEntityById(id);
 
         validateLoanNotReturned(prestamo.getFechaDevolucion());
 
         prestamo.setFechaDevolucion(LocalDate.now());
-        Prestamo savedPrestamo = repository.save(prestamo);
+        repository.save(prestamo);
         log.info("El prestamo con ID {} fue actualizado correctamente.", prestamo.getId());
 
         updateReturnedBookStock(prestamo.getIdLibro());
 
-        return savedPrestamo;
+        PrestamoDTO dto = mapper.toDTO(prestamo);
+        return enrichPrestamo(dto);
     }
 
     private void updateReturnedBookStock(Long idLibro) throws ComunicacionFallidaException {
@@ -145,5 +161,22 @@ public class PrestamoService implements IPrestamoService{
             log.error("El prestamo ya fue devuelto!");
             throw new RecursoInvalidoException("El prestamo ya fue devuelto.");
         }
+    }
+
+    private Prestamo findEntityById(Long id) throws RecursoNoEncontradoException {
+        return repository.findById(id).orElseThrow(() -> {
+            log.warn("No se encontró el prestamo con ID: {}", id);
+            return new RecursoNoEncontradoException("El prestamo con ID " + id + " no existe");
+        });
+    }
+
+    private PrestamoDTO enrichPrestamo(PrestamoDTO dto) {
+        try {
+            dto.setUsuario(usuarioClient.getUsuarioById(dto.getIdUsuario()));
+            dto.setLibro(libroClient.getLibroById(dto.getIdLibro()));
+        } catch (Exception e) {
+            log.error("Error al enriquecer el préstamo {}: {}", dto.getId(), e.getMessage());
+        }
+        return dto;
     }
 }
