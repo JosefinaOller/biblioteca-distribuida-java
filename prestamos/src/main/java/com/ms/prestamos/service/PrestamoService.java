@@ -17,7 +17,6 @@ import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 import java.time.LocalDate;
 import java.util.List;
-import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -101,7 +100,7 @@ public class PrestamoService implements IPrestamoService{
             log.error("Error al conectar con MS Usuarios", e);
             throw new ComunicacionFallidaException("No se pudo comunicar con el microservicio de Usuarios.");
         }
-        if (!usuario.isActivo()){
+        if (!Boolean.TRUE.equals(usuario.getIsActivo())){
             log.warn("El usuario no es activo.");
             throw new RecursoInvalidoException("El usuario no es activo.");
         }
@@ -117,7 +116,7 @@ public class PrestamoService implements IPrestamoService{
                     PrestamoDTO dto = mapper.toDTO(prestamo);
                     return enrichPrestamo(dto);
                 })
-                .collect(Collectors.toList());
+                .toList();
     }
 
     @Override

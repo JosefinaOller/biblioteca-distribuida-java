@@ -2,7 +2,6 @@ package com.ms.prestamos.service;
 
 import com.ms.prestamos.dto.PrestamoDTO;
 import com.ms.prestamos.exception.*;
-import com.ms.prestamos.model.Prestamo;
 import java.util.List;
 
 public interface IPrestamoService {
