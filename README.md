@@ -122,4 +122,4 @@ POSTGRES_PASSWORD=tu_contraseñaPostgresSQL
 └── README.md          # Este archivo
 ```
 
-**🚀 Sistema desarrollado para Evaluación Técnica - Academy Backend 2025**
+**🚀 Proyecto orientado a arquitecturas escalables y buenas prácticas de desarrollo backend.**
